@@ -4,18 +4,6 @@ using UnityEngine;
 
 public class SoundControler : Singleton<SoundControler>
 {
-    SoundControler instance;
-    public SoundControler Instance { get => instance; }
-
-    private void Awake()
-    {
-        if (instance == null)
-        {
-            instance = this;
-        }
-        else Destroy(this);
-    }
-
     [SerializeField] SoundSO[] soundTracks;
     [SerializeField] SoundSO[] soundEffects;
     AudioSource audioSource;
