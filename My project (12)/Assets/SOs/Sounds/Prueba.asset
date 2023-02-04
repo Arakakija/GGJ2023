@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 253fe4263e2d7db4cb32180291e07935, type: 3}
   m_Name: Prueba
   m_EditorClassIdentifier: 
-  _name: 
+  _name: Cacho
   audio: {fileID: 0}
