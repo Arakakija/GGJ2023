@@ -7,14 +7,14 @@ using UnityEngine.EventSystems;
 
 public class DragController : MonoBehaviour
 {
-    private GameObject selectedObject;
+    private PuzzlePiece selectedObject;
     private Vector3 offset;
     
     public void Update()
     {
         Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Drag(mousePosition);
-        if (selectedObject)
+        if (selectedObject && selectedObject.GetComponent<PuzzlePiece>().canDrag)
         {
             selectedObject.transform.position = mousePosition + offset;
         }
@@ -27,7 +27,7 @@ public class DragController : MonoBehaviour
         {
             Collider2D[] results = Physics2D.OverlapPointAll(mousePosition);
             Collider2D highestCollider = GetHighestObject(results);
-            selectedObject = highestCollider.transform.gameObject;
+            selectedObject = highestCollider.transform.gameObject.GetComponent<PuzzlePiece>();
             offset = selectedObject.transform.position - mousePosition;
             
             var draggable = selectedObject.GetComponent<DraggableObject>();

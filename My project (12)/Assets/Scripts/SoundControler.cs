@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SoundControler : MonoBehaviour
+public class SoundControler : Singleton<SoundControler>
 {
     SoundControler instance;
     public SoundControler Instance { get => instance; }
@@ -18,7 +18,6 @@ public class SoundControler : MonoBehaviour
 
     [SerializeField] SoundSO[] soundTracks;
     [SerializeField] SoundSO[] soundEffects;
-
     AudioSource audioSource;
 
     float sfxVolume;
