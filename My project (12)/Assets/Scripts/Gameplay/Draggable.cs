@@ -6,6 +6,6 @@ using UnityEngine.Events;
 
 public abstract class DraggableObject : MonoBehaviour
 {
-     public UnityEvent onDrag;
-     public UnityEvent onRelease;
+     public UnityAction OnDrag;
+     public UnityAction OnRelease;
 }

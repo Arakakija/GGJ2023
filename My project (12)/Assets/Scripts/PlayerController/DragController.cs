@@ -1,18 +1,14 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class DragController : MonoBehaviour
 {
-    private GameObject selectedObject; 
+    private GameObject selectedObject;
     private Vector3 offset;
-    
-    public void Start()
-    {
-        
-    }
     
     public void Update()
     {
@@ -33,6 +29,10 @@ public class DragController : MonoBehaviour
             Collider2D highestCollider = GetHighestObject(results);
             selectedObject = highestCollider.transform.gameObject;
             offset = selectedObject.transform.position - mousePosition;
+            
+            var draggable = selectedObject.GetComponent<DraggableObject>();
+            if (draggable) draggable.OnDrag?.Invoke();
+            selectedObject.GetComponent<PuzzlePiece>().isDragging = true;
         }
     }
     
@@ -40,15 +40,17 @@ public class DragController : MonoBehaviour
     {
         int highestValue = 0;
         Collider2D highestObject = results[0];
-        foreach(Collider2D col in results)
+        for (var index = 0; index < results.Length; index++)
         {
+            Collider2D col = results[index];
             Renderer ren = col.gameObject.GetComponent<Renderer>();
-            if(ren && ren.sortingOrder > highestValue)
+            if (ren && ren.sortingOrder > highestValue)
             {
                 highestValue = ren.sortingOrder;
                 highestObject = col;
             }
         }
+
         return highestObject;
     }
 
@@ -57,9 +59,10 @@ public class DragController : MonoBehaviour
         if (Input.GetMouseButtonUp(0) && selectedObject)
         {
             var draggable = selectedObject.GetComponent<DraggableObject>();
-            if (draggable) draggable.onDrag?.Invoke();
+            if (draggable) draggable.OnRelease?.Invoke();
             selectedObject = null;
         }
     }
+    
 }
 

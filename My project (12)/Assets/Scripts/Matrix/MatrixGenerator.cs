@@ -27,6 +27,7 @@ public class MatrixGenerator : MonoBehaviour
             for (var index1 = 0; index1 < matrix.GetLength(1); index1++)
             {
                 GameObject go = Instantiate(_prefab, SetPosition(_parentTransform.position,index0,index1), Quaternion.identity, _parentTransform);
+                go.GetComponent<PuzzlePiece>().yPosition = index0;
             }
         }
 
