@@ -16,8 +16,8 @@ public class SoundControler : MonoBehaviour
         else Destroy(this);
     }
 
-    Dictionary<string, AudioClip> soundTracks;
-    Dictionary<string, AudioClip> soundEffects;
+    [SerializeField] SoundSO[] soundTracks;
+    [SerializeField] SoundSO[] soundEffects;
 
     AudioSource audioSource;
 
@@ -44,8 +44,13 @@ public class SoundControler : MonoBehaviour
     public void SetMusic(string name)
     {
         if (audioSource == null) return;
-        soundTracks.TryGetValue(name, out AudioClip value);
-        audioSource.clip = value;
+
+        for(int i = 0; i < soundTracks.Length; i++)
+            if(soundTracks[i].name == name)
+            {
+                audioSource.clip = soundTracks[i].audio;
+                return;
+            }  
     }
 
     public void PlayPauseMusic(bool isOn)
@@ -67,10 +72,18 @@ public class SoundControler : MonoBehaviour
     public void PlaySound(string name, AudioSource _as)
     {
         if (_as == null) return;
+        AudioClip clip = null;
 
-        soundTracks.TryGetValue(name, out AudioClip value);
+        for (int i = 0; i < soundEffects.Length; i++)
+            if (soundEffects[i].name == name)
+            {
+                clip = soundEffects[i].audio;
+                return;
+            }
 
-        _as.clip = value;
+        if (clip == null) return;
+
+        _as.clip = clip;
         _as.volume = sfxVolume;
         _as.Play();
     }
