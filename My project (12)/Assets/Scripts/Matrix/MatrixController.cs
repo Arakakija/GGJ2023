@@ -23,8 +23,6 @@ public class MatrixController : Singleton<MatrixController>
     public float DistanceY = 1.0f;
     private GameObject[,] Grid;
 
-    [SerializeField] private TextMeshProUGUI[] texts;
-
     public int lockedRow = 0;
 
     public bool isPlaying = false;
@@ -146,7 +144,6 @@ public class MatrixController : Singleton<MatrixController>
             }
         }
         OnRowCompleted?.Invoke();
-        texts[(int)piece.CorrectPosition.y].gameObject.SetActive(true);
         lockedRow++;
         if(lockedRow >= 3) OnCompleted?.Invoke();
     }
@@ -173,26 +170,10 @@ public class MatrixController : Singleton<MatrixController>
 
     IEnumerator StartFade()
     {
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(7.0f);
         foreach (var tile in Grid)
         {
             StartCoroutine(tile.GetComponent<PuzzlePiece>().FadeImage(true));
-        }
-        StartCoroutine(FadeText(true));
-    }
-
-    IEnumerator FadeText(bool fadeAway)
-    {
-        // fade from opaque to transparent
-        if (fadeAway)
-        {
-            // loop over 1 second backwards
-            for (float i = 1; i >= 0; i -= Time.deltaTime)
-            {
-                // set color with i as alpha
-                canvasGroup.alpha = i;
-                yield return null;
-            }
         }
     }
 }
