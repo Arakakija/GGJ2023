@@ -32,7 +32,12 @@ public class Clickeable : MonoBehaviour
 
     private void Update()
     {
-        if (canBeClicked) animationTimeCounter = (animationTimeCounter > 0) ? animationTimeCounter - Time.deltaTime : 0;
+        if (clicked) animationTimeCounter = (animationTimeCounter > 0) ? animationTimeCounter - Time.deltaTime : 0;
+        if (clicked && animationTimeCounter <= 0)
+        {
+            onClick?.Invoke();
+            clicked = false;
+        }
     }
 
     public void OnClick()
@@ -41,8 +46,18 @@ public class Clickeable : MonoBehaviour
         onClick?.Invoke();
         StartAnimation();
     }
-    
-    void StartAnimation()
+
+    void PlayRandSound()
+    {
+        if (soundsNames == null) return;
+        if (soundsNames.Length <= 0) return;
+
+        int rand = UnityEngine.Random.Range(0, soundsNames.Length - 1);
+
+        SoundControler.Instance.PlaySound(soundsNames[rand], _as);
+    }
+
+        void StartAnimation()
     {
         if (animated)
         {
