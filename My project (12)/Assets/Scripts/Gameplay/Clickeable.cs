@@ -1,9 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Clickeable : MonoBehaviour
 {
+    public UnityAction onClick;
+    
     ParticleSystem particles;
     SpriteRenderer spriteRenderer;
 
@@ -34,14 +37,12 @@ public class Clickeable : MonoBehaviour
 
     public void OnClick()
     {
-        if (clicked) return;
-
-        Debug.Log("Se clickeo");
+        onClick?.Invoke();
         clicked = true;
 
         StartAnimation();
     }
-
+    
     void StartAnimation()
     {
         if (animated)
