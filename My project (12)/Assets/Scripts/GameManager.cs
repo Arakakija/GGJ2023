@@ -8,8 +8,14 @@ public class GameManager : Singleton<GameManager>
     const string bootWord = "Berazategui";
     const string moonWord = "disappeared";
     const string ligthWord = "refuse";
-    
-    
+
+    [SerializeField] string nameMusic;
+
+    private void Start()
+    {
+        SoundControler.Instance.SetMusic(nameMusic);
+    }
+
     public void CheckWin()
     {
         if (PlayerPrefs.GetString(TypePage.Boot.ToString()) == bootWord &&

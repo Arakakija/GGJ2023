@@ -36,14 +36,15 @@ public class SoundControler : Singleton<SoundControler>
             if(soundTracks[i].name == name)
             {
                 audioSource.clip = soundTracks[i].audio;
+                audioSource.Play();
                 return;
             }  
     }
 
-    public void PlayPauseMusic(bool isOn)
+    public void PlayPauseMusic(bool play)
     {
         if (audioSource == null) return;
-        if (isOn)
+        if (play)
         {
             audioSource.Play();
         }
