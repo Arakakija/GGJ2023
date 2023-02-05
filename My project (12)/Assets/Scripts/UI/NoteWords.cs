@@ -12,11 +12,11 @@ public class NoteWords : MonoBehaviour
     // Start is called before the first frame update
     private void OnEnable()
     {
-        if(IsNullOrEmpty(PlayerPrefs.GetString(type.ToString()))) gameObject.SetActive(false);
-    }
-
-    void Start()
-    {
+        if (IsNullOrEmpty(PlayerPrefs.GetString(type.ToString())))
+        {
+            gameObject.SetActive(false);
+            return;
+        }
         text.text = PlayerPrefs.GetString(type.ToString());
     }
 }

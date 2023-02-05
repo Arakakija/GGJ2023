@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PointerControler : MonoBehaviour
+public class PointerControler : Singleton<PointerControler>
 {
-    // Update is called once per frame
+    // Update is called once per frame  
     void Update()
     {
         Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);

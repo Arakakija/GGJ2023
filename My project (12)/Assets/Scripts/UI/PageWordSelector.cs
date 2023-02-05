@@ -15,7 +15,6 @@ public class PageWordSelector : MonoBehaviour
 
     public void SaveWord()
     {
-        Debug.Log(typePage.ToString());
         PlayerPrefs.SetString(typePage.ToString(),word);
     }
 }

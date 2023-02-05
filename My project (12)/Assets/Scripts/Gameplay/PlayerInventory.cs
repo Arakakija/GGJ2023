@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -5,8 +6,9 @@ using UnityEngine;
 
 public class PlayerInventory : MonoBehaviour
 {
-    public List<PageItem> pages;
+    public List<PageItem> pages = new List<PageItem>();
     
+
     public void AddPage(PageItem page)
     {
         pages.Add(page);
@@ -24,5 +26,10 @@ public class PlayerInventory : MonoBehaviour
     public bool hasAllPages()
     {
         return PagesCount() >= 8;
+    }
+
+    public void ResetInventory()
+    {
+        pages.Clear();
     }
 }

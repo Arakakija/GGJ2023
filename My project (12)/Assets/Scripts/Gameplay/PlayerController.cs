@@ -12,6 +12,11 @@ public class PlayerController : Singleton<PlayerController>
         PlayerPrefs.DeleteAll();
     }
 
+    public void ResetPlayer()
+    {
+        inventory.ResetInventory();
+    }
+
     // Update is called once per frame
     void Update()
     {
