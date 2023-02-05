@@ -9,6 +9,9 @@ public class Clickeable : MonoBehaviour
     
     ParticleSystem particles;
     SpriteRenderer spriteRenderer;
+    private AudioSource _as;
+
+    private string[] soundsNames;
 
     [SerializeField] Sprite firstSrpite;
     [SerializeField] Sprite secundSrpite;
@@ -22,6 +25,7 @@ public class Clickeable : MonoBehaviour
     [SerializeField] bool changeSrpite;
 
     bool canBeClicked = true;
+    private bool clicked;
 
     private void Start()
     {
