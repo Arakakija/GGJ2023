@@ -19,7 +19,7 @@ public class CloseOnContextLoss : MonoBehaviour, IPointerEnterHandler, IPointerE
     {
         if (Input.GetMouseButtonDown(0) && !inContext)
         {
-            DiaryUI.OnCloseDiary?.Invoke();
+            UIManager.OnCloseDiary?.Invoke();
             myGO.SetActive(inContext);
         }
     }

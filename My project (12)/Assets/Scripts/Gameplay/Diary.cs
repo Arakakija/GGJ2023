@@ -12,6 +12,7 @@ public class Diary : Clickeable
     
     void OpenDiary()
     {
-        DiaryUI.OnOpenDiary?.Invoke();
+        if (MatrixController.Instance.isPlaying) return;
+        UIManager.OnOpenDiary?.Invoke();
     }
 }

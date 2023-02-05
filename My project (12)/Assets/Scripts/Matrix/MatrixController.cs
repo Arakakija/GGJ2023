@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
@@ -14,13 +15,19 @@ public class MatrixController : Singleton<MatrixController>
     public UnityAction OnRowCompleted;
     
     
+    public Transform _placeholder;
     public GameObject tile;
+    public CanvasGroup canvasGroup;
     private int dimension = 3;
     public float DistanceX = 1.0f; 
     public float DistanceY = 1.0f;
     private GameObject[,] Grid;
 
+    [SerializeField] private TextMeshProUGUI[] texts;
+
     public int lockedRow = 0;
+
+    public bool isPlaying = false;
 
     private void OnEnable()
     {
@@ -32,6 +39,7 @@ public class MatrixController : Singleton<MatrixController>
     {
         InitGrid();
         ShuffleGrid();
+        isPlaying = true;
     }
     
     public void InitGrid()
@@ -44,10 +52,10 @@ public class MatrixController : Singleton<MatrixController>
         {
             for (int column = 0; column < dimension; column++) 
             {
-                GameObject newTile = Instantiate(tile); 
+                GameObject newTile = Instantiate(tile,_placeholder); 
                 SpriteRenderer renderer = newTile.GetComponent<SpriteRenderer>(); 
                 renderer.sprite = sprites[i];
-                newTile.transform.parent = transform; 
+                newTile.transform.parent = _placeholder; 
                 newTile.transform.position = new Vector3(column * DistanceX, row * DistanceY, 0) + positionOffset;
                 var newPiece = newTile.GetComponent<PuzzlePiece>();
                 newPiece.CorrectPosition = new Vector2(column, row);
@@ -138,16 +146,53 @@ public class MatrixController : Singleton<MatrixController>
             }
         }
         OnRowCompleted?.Invoke();
+        texts[(int)piece.CorrectPosition.y].gameObject.SetActive(true);
         lockedRow++;
         if(lockedRow >= 3) OnCompleted?.Invoke();
     }
 
 
+    public void HidePartitures()
+    {
+        _placeholder.gameObject.SetActive(false);
+        isPlaying = false;
+    }
+
+    public void ShowPartitures()
+    {
+        if(UIManager.Instance.isDiaryOpen) return;
+        _placeholder.gameObject.SetActive(true);
+        isPlaying = true;
+    }
+
     void PuzzleCompleted()
     {
+        StartCoroutine(StartFade());
+        isPlaying = false;
+    }
+
+    IEnumerator StartFade()
+    {
+        yield return new WaitForSeconds(1.5f);
         foreach (var tile in Grid)
         {
             StartCoroutine(tile.GetComponent<PuzzlePiece>().FadeImage(true));
+        }
+        StartCoroutine(FadeText(true));
+    }
+
+    IEnumerator FadeText(bool fadeAway)
+    {
+        // fade from opaque to transparent
+        if (fadeAway)
+        {
+            // loop over 1 second backwards
+            for (float i = 1; i >= 0; i -= Time.deltaTime)
+            {
+                // set color with i as alpha
+                canvasGroup.alpha = i;
+                yield return null;
+            }
         }
     }
 }

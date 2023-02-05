@@ -7,7 +7,7 @@ using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class DiaryUI : Singleton<DiaryUI>
+public class UIManager : Singleton<UIManager>
 {
     public static UnityAction OnOpenDiary;
     public static UnityAction OnCloseDiary;
@@ -18,6 +18,7 @@ public class DiaryUI : Singleton<DiaryUI>
 
     [SerializeField] private GameObject panelButton;
     [SerializeField] private GameObject panelPage;
+    [SerializeField] private GameObject panelPartitures;
 
     [SerializeField] private NoteWords[] _noteWords;
 
@@ -25,6 +26,8 @@ public class DiaryUI : Singleton<DiaryUI>
     public Image nextPage;
 
     public int currentPage = 0;
+
+    public bool isDiaryOpen = false;
 
     private void OnEnable()
     {
@@ -34,6 +37,8 @@ public class DiaryUI : Singleton<DiaryUI>
 
     private void Start()
     {
+        MatrixController.Instance.OnStartPartiture += ShowPartituresUI;
+        MatrixController.Instance.OnCompleted += HidePartituresUI;
         panelPage = GameObject.FindWithTag("Pages");
     }
 
@@ -60,6 +65,7 @@ public class DiaryUI : Singleton<DiaryUI>
         diaryPages[0].gameObject.SetActive(true);
         openDiaryButton.gameObject.SetActive(true);
         panelButton.SetActive(false);
+        isDiaryOpen = true;
     }
 
     public void GoFirstPage()
@@ -81,6 +87,7 @@ public class DiaryUI : Singleton<DiaryUI>
         openDiaryButton.gameObject.SetActive(false);
         submitButton.gameObject.SetActive(false);
         currentPage = 0;
+        isDiaryOpen = false;
     }
     
 
@@ -100,6 +107,16 @@ public class DiaryUI : Singleton<DiaryUI>
         }
     }
 
+
+    public void ShowPartituresUI()
+    {
+        panelPartitures.gameObject.SetActive(true);
+    }
+    
+    public void HidePartituresUI()
+    {
+        panelPartitures.gameObject.SetActive(false);
+    }
 
     void RefreshNoteWords()
     {
@@ -121,5 +138,6 @@ public class DiaryUI : Singleton<DiaryUI>
     {
         CloseDiaryUI();
         ResetNoteWords();
+        HidePartituresUI();
     }
 }

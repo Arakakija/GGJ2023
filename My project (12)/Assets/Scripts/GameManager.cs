@@ -23,7 +23,7 @@ public class GameManager : Singleton<GameManager>
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
             PlayerPrefs.DeleteAll();
             PlayerController.Instance.ResetPlayer();
-            DiaryUI.Instance.ResetUI();
+            UIManager.Instance.ResetUI();
         }
     }
 }
