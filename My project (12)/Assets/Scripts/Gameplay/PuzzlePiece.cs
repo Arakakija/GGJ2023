@@ -1,4 +1,4 @@
-using System;
+    using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -6,92 +6,46 @@ using UnityEngine;
 using UnityEngine.Events;
 using Random = UnityEngine.Random;
 
-public class PuzzlePiece : DraggableObject
+public class PuzzlePiece : Draggable
 {
-    private List<PuzzlePiece> _list = new List<PuzzlePiece>();
+    public Vector2 CorrectPosition;
+    public Vector2 CurrentPostion;
 
-    private Vector3 _startPosition;
-    private Vector3 newPosition;
-
-    public int correctOrder = 0;
-        
-    public int yPosition;
-
-    [SerializeField] private GameObject objectToSwap;
-
-    private SpriteRenderer _spriteRenderer;
-
-    public bool canDrag = true;
-    public bool isDragging = false;
+    public Vector3 startPosition;
+    
+    public GameObject objectToSwap;
 
     private void OnEnable()
     {
-        OnRelease += SwapPosition;
-        OnDrag += GetStartPosition;
+        DragEndObject += OnDrop;
     }
-
     private void OnDisable()
     {
-        OnRelease -= SwapPosition;
-        OnDrag -= GetStartPosition;
-    }
-
-
-    private void Start()
-    {
-        _spriteRenderer = GetComponent<SpriteRenderer>();
-        _spriteRenderer.color = Random.ColorHSV(0f, 1f, 1f, 1f, 0.5f, 1f);
-        _startPosition = transform.position;
+        DragEndObject -= OnDrop;
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (!other.gameObject || !isDragging) return;
-        if (other.GetComponent<PuzzlePiece>()) _list.Add(other.GetComponent<PuzzlePiece>());
+        if(other == null || !isDragged || other.GetComponent<PuzzlePiece>().CorrectPosition.x != CorrectPosition.x) return;
+        objectToSwap = other.gameObject;
     }
 
-    private void OnTriggerExit2D(Collider2D other)
+    public bool IsOnCorrectPosition()
     {
-        if (_list.Contains(other.GetComponent<PuzzlePiece>())) _list.Remove(other.GetComponent<PuzzlePiece>());
+        return CurrentPostion == CorrectPosition;
     }
 
-    void GetStartPosition()
+    public void OnDrop(Draggable draggable)
     {
-        _startPosition = transform.position;
-    }
-
-    void SwapPosition()
-    {
-        objectToSwap = _list.Count > 0 ? _list[0].gameObject : null;
-
-        if (!objectToSwap || objectToSwap.GetComponent<PuzzlePiece>().yPosition != this.yPosition || !objectToSwap.GetComponent<PuzzlePiece>().canDrag)
+        if (objectToSwap == null)
         {
-            transform.position = _startPosition;
+            transform.position = MatrixController.Instance.SetPosition(CurrentPostion);
             return;
         }
-
-        newPosition = objectToSwap.transform.position;
-        transform.position = newPosition;
-        objectToSwap.transform.position = _startPosition;
-        
+        MatrixController.Instance.SwapTiles(CurrentPostion,objectToSwap.GetComponent<PuzzlePiece>().CurrentPostion);
+        MatrixController.Instance.TryFreezeRow(this);
+        MatrixController.Instance.TryFreezeRow(objectToSwap.GetComponent<PuzzlePiece>());
         objectToSwap = null;
-        isDragging = false;
-        MatrixController.checkRow?.Invoke(yPosition);
     }
     
-    public void Lock()
-    {
-        canDrag = false;
-    }
-    
-    public  List<GameObject> FindMatch(Vector2 castDir) { // 1
-        List<GameObject> matchingTiles = new List<GameObject>(); // 2
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, castDir); // 3
-        while (hit.collider != null && hit.collider.GetComponent<PuzzlePiece>().correctOrder == correctOrder 
-        && hit.collider.GetComponent<PuzzlePiece>().yPosition == yPosition) { // 4
-            matchingTiles.Add(hit.collider.gameObject);
-            hit = Physics2D.Raycast(hit.collider.transform.position, castDir);
-        }
-        return matchingTiles; // 5
-    }
 }

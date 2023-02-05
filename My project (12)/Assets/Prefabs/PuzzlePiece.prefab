@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4938450845076982198}
   - component: {fileID: 4938450845076982200}
   - component: {fileID: 4938450845076982201}
-  - component: {fileID: 4601769329646760995}
+  - component: {fileID: 2611204972667925965}
   m_Layer: 0
   m_Name: PuzzlePiece
   m_TagString: Untagged
@@ -99,9 +99,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac7499d6231a041be8a071d71ef53d91, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  onDrag:
-    m_PersistentCalls:
-      m_Calls: []
+  isDraggable: 1
+  PositionX: 0
+  PositionY: 0
   objectToSwap: {fileID: 0}
 --- !u!61 &4938450845076982201
 BoxCollider2D:
@@ -129,7 +129,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!50 &4601769329646760995
+--- !u!50 &2611204972667925965
 Rigidbody2D:
   serializedVersion: 4
   m_ObjectHideFlags: 0

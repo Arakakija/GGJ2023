@@ -5,71 +5,124 @@ using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
+using Random = UnityEngine.Random;
 
 public class MatrixController : Singleton<MatrixController>
 {
-    public static UnityAction<float> checkRow;
-    public static UnityAction<PuzzlePiece> checkPiecePosition;
-    public PuzzlePiece[,] matrix = new PuzzlePiece[3, 3];
-    
-    [SerializeField] public float _offset;
-    
-    private bool matchFound = false;
+    public UnityAction OnlockedRow;
+    public GameObject tile;
+    private int dimension = 3;
+    public float DistanceX = 1.0f; 
+    public float DistanceY = 1.0f;
+    private GameObject[,] Grid;
 
-    private void OnEnable()
-    {
-        checkPiecePosition += CheckPiecePosition;
-    }
-
-    private void OnDisable()
-    {
-        checkPiecePosition -= CheckPiecePosition;
-    }
-
-    void CheckPiecePosition(PuzzlePiece piece)
-    {
-        ClearAllMatches(piece);
-    }
+    public int lockedRow = 0;
     
-    
-    private void ClearMatch(PuzzlePiece piece,Vector2[] paths) // 1
+    public void InitGrid()
     {
-        List<GameObject> matchingTiles = new List<GameObject>(); // 2
-        for (int i = 0; i < paths.Length; i++) // 3
+        Sprite[] sprites = Resources.LoadAll<Sprite>("Sprites/Partitures");
+        Grid = new GameObject[3,3];
+        int i = 0;
+        Vector3 positionOffset= transform.position - new Vector3(dimension * DistanceX / 2.0f, dimension * DistanceY / 2.0f, 0);
+        for (int row = 0; row < dimension; row++)
         {
-            matchingTiles.AddRange(piece.FindMatch(paths[i]));
-        }
-        if (matchingTiles.Count >= 2) // 4
-        {
-            for (int i = 0; i < matchingTiles.Count; i++) // 5
+            for (int column = 0; column < dimension; column++) 
             {
-                matchingTiles[i].GetComponent<SpriteRenderer>().sprite = null;
+                GameObject newTile = Instantiate(tile); 
+                SpriteRenderer renderer = newTile.GetComponent<SpriteRenderer>(); 
+                renderer.sprite = sprites[i];
+                newTile.transform.parent = transform; 
+                newTile.transform.position = new Vector3(column * DistanceX, row * DistanceY, 0) + positionOffset;
+                var newPiece = newTile.GetComponent<PuzzlePiece>();
+                newPiece.CorrectPosition = new Vector2(column, row);
+                newPiece.CurrentPostion = newPiece.CorrectPosition;
+                Grid[column, row] = newTile;
+                i++;
             }
-            matchFound = true; // 6
         }
     }
     
-    public void ClearAllMatches(PuzzlePiece piece) {
-        if (piece == null)
-            return;
-
-        ClearMatch(piece,new Vector2[2] { Vector2.left, Vector2.right });
-        if (matchFound) {
-            matchFound = false;
-            FreezeRow(piece.correctOrder - 1);
-        }
-    }
-
-
-    public void FreezeRow(float rowNumber)
+    public void ShuffleGrid()
     {
-        var row =new CustomArray<PuzzlePiece>().GetColumn(matrix, (int) rowNumber);
-        foreach (var tile in row)
+        foreach (var tile in Grid)
         {
-            tile.Lock();
+            int randX = Random.Range(0, 3);
+            SwapTiles(tile.GetComponent<PuzzlePiece>().CurrentPostion, GetObjectAt( (int)tile.GetComponent<PuzzlePiece>().CurrentPostion.x,randX).CurrentPostion);
         }
     }
+
+
+    public bool CheckNeighbours(PuzzlePiece piece)
+    {
+        var RightNeigbour = GetObjectAt((int)piece.CurrentPostion.x + 1, (int)piece.CurrentPostion.y );
+        var LeftNeigbour = GetObjectAt((int)piece.CurrentPostion.x -1 , (int)piece.CurrentPostion.y );
+
+        if (RightNeigbour && LeftNeigbour && LeftNeigbour.IsOnCorrectPosition() &&
+            RightNeigbour.IsOnCorrectPosition() && piece.IsOnCorrectPosition())
+        {
+            return true;
+        }
+
+        if (!RightNeigbour && LeftNeigbour && LeftNeigbour.IsOnCorrectPosition() && piece.IsOnCorrectPosition() &&
+            CheckNeighbours(LeftNeigbour))
+        {
+            return true;
+        }
+
+        if (RightNeigbour && !LeftNeigbour && RightNeigbour.IsOnCorrectPosition() && piece.IsOnCorrectPosition() &&
+            CheckNeighbours(RightNeigbour))
+        {
+            return true;
+        }
+
+        return false;
+    }
     
+    PuzzlePiece GetObjectAt(int column, int row)
+    {
+        if (column < 0 || column >= dimension
+                       || row < 0 || row >= dimension)
+            return null;
+        GameObject tile = Grid[column, row];
+        PuzzlePiece draggable = tile.GetComponent<PuzzlePiece>();
+        return draggable;
+    }
+    
+    public void SwapTiles(Vector2 tile1Position, Vector2 tile2Position) // 1
+    {
+        Vector2 positionOffset = transform.position - new Vector3(dimension * DistanceX / 2.0f, dimension * DistanceY / 2.0f, 0);
+        GameObject tile1 = Grid[(int)tile1Position.x, (int)tile1Position.y];
+        GameObject tile2 = Grid[(int)tile2Position.x, (int)tile2Position.y];
 
+        tile1.transform.position = new Vector2(tile2Position.x * DistanceX,tile2Position.y * DistanceY) + positionOffset;
+        tile2.transform.position = new Vector2(tile1Position.x * DistanceX,tile1Position.y * DistanceY) + positionOffset;;
 
+        var piece1 = tile1.GetComponent<PuzzlePiece>();
+        var piece2 = tile2.GetComponent<PuzzlePiece>();
+
+        (piece1.CurrentPostion, piece2.CurrentPostion) = (piece2.CurrentPostion, piece1.CurrentPostion);
+        
+        (Grid[(int)tile1Position.x, (int)tile1Position.y], Grid[(int)tile2Position.x, (int)tile2Position.y]) = (Grid[(int)tile2Position.x, (int)tile2Position.y], Grid[(int)tile1Position.x, (int)tile1Position.y]);
+    }
+
+    public Vector3 SetPosition(Vector2 CurrentPosition)
+    {
+        Vector3 positionOffset = transform.position - new Vector3(dimension * DistanceX / 2.0f, dimension * DistanceY / 2.0f, 0);
+        return new Vector3(CurrentPosition.x * DistanceX,CurrentPosition.y * DistanceY) + positionOffset;
+    }
+
+    public void TryFreezeRow(PuzzlePiece piece)
+    {
+        if(!CheckNeighbours(piece)) return;
+        foreach (var tile in Grid)
+        {
+            if ((int)tile.GetComponent<PuzzlePiece>().CorrectPosition.y == (int)piece.CorrectPosition.y)
+            {
+                tile.GetComponent<PuzzlePiece>().Lock();
+            }
+        }
+        OnlockedRow?.Invoke();
+        lockedRow++;
+    }
+    
 }
