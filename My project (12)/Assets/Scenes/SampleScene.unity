@@ -1744,18 +1744,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   soundTracks:
-  - {fileID: 11400000, guid: 106819ef30bcad34383f3349028ef427, type: 2}
-  soundEffects:
-  - {fileID: 11400000, guid: e4be43aae99a1254ebb7d6cf6eb8336a, type: 2}
-  - {fileID: 11400000, guid: 4bd5379c0a995824ca46001576b4236c, type: 2}
-  - {fileID: 11400000, guid: 1902470cf037c75468dbce5f932ed86d, type: 2}
-  - {fileID: 11400000, guid: 09cb051dacc5c4f449c356c6ec00696c, type: 2}
-  - {fileID: 11400000, guid: 26ae3bc31000ed64182d145521715e7d, type: 2}
-  - {fileID: 11400000, guid: 844dcd733f3bbdf48bcb5153917fd079, type: 2}
-  - {fileID: 11400000, guid: e6c2bdab941652b4ebef1f9fc9fef129, type: 2}
-  - {fileID: 11400000, guid: 7fc0e75d03de2a94998e741f93f4374c, type: 2}
-  - {fileID: 11400000, guid: 6d66fe5219b3b0243beb5b220fd4045e, type: 2}
-  - {fileID: 11400000, guid: 61efb141c757f1e4181e2ffbd86459b1, type: 2}
+  - {fileID: 11400000, guid: 7f821c1900a7e984ca1e2445ef518c9f, type: 2}
+  soundEffects: []
 --- !u!4 &381133074
 Transform:
   m_ObjectHideFlags: 0
@@ -5184,6 +5174,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f231c4fb786f3946a6b90b886c48677, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_SendPointerHoverToParent: 1
   m_HorizontalAxis: Horizontal
   m_VerticalAxis: Vertical
   m_SubmitButton: Submit
@@ -10572,7 +10563,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34e42fbdbe1c9be48b849b34a605716b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nameMusic: 
 --- !u!1 &1663364539
 GameObject:
   m_ObjectHideFlags: 0

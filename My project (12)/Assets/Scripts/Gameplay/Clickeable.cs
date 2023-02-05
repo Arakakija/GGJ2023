@@ -6,15 +6,12 @@ using UnityEngine.Events;
 public class Clickeable : MonoBehaviour
 {
     public UnityAction onClick;
-
+    
     ParticleSystem particles;
     SpriteRenderer spriteRenderer;
-    protected AudioSource _as;
 
     [SerializeField] Sprite firstSrpite;
     [SerializeField] Sprite secundSrpite;
-
-    [SerializeField] protected string[] soundsNames;
 
     [SerializeField] float animationTime;
     [SerializeField] float animationTimeCounter;
@@ -25,46 +22,27 @@ public class Clickeable : MonoBehaviour
     [SerializeField] bool changeSrpite;
 
     bool canBeClicked = true;
-    bool clicked;
 
     private void Start()
     {
         spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
-        clicked = false;
-
-        _as = gameObject.GetComponent<AudioSource>();
-
         firstSrpite = spriteRenderer.sprite;
         animationTimeCounter = animationTime;
     }
 
     private void Update()
     {
-        if (clicked) animationTimeCounter = (animationTimeCounter > 0) ? animationTimeCounter - Time.deltaTime : 0;
-        if (clicked && animationTimeCounter <= 0)
-        {
-            onClick?.Invoke();
-        }
+        if (canBeClicked) animationTimeCounter = (animationTimeCounter > 0) ? animationTimeCounter - Time.deltaTime : 0;
     }
 
     public void OnClick()
     {
-        if (!canBeClicked) return;
-        clicked = true;
+        if(!canBeClicked) return;
+        onClick?.Invoke();
         StartAnimation();
-        PlayRandSound();
     }
-
-    void PlayRandSound()
-    {
-        if (soundsNames == null) return;
-
-        int rand = UnityEngine.Random.Range(0, soundsNames.Length - 1);
-
-        SoundControler.Instance.PlaySound(soundsNames[rand], _as);
-    }
-
-        void StartAnimation()
+    
+    void StartAnimation()
     {
         if (animated)
         {
@@ -100,6 +78,7 @@ public class Clickeable : MonoBehaviour
         if (!flicker)
         {
             animationTimeCounter = animationTime;
+            canBeClicked = false;
         }
     }
 }
