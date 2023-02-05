@@ -9,7 +9,11 @@ using Random = UnityEngine.Random;
 
 public class MatrixController : Singleton<MatrixController>
 {
-    public UnityAction OnlockedRow;
+    public UnityAction OnStartPartiture;
+    public UnityAction OnCompleted;
+    public UnityAction OnRowCompleted;
+    
+    
     public GameObject tile;
     private int dimension = 3;
     public float DistanceX = 1.0f; 
@@ -17,6 +21,18 @@ public class MatrixController : Singleton<MatrixController>
     private GameObject[,] Grid;
 
     public int lockedRow = 0;
+
+    private void OnEnable()
+    {
+        OnStartPartiture += InitPartitures;
+        OnCompleted += PuzzleCompleted;
+    }
+
+    private void InitPartitures()
+    {
+        InitGrid();
+        ShuffleGrid();
+    }
     
     public void InitGrid()
     {
@@ -121,8 +137,17 @@ public class MatrixController : Singleton<MatrixController>
                 tile.GetComponent<PuzzlePiece>().Lock();
             }
         }
-        OnlockedRow?.Invoke();
+        OnRowCompleted?.Invoke();
         lockedRow++;
+        if(lockedRow >= 3) OnCompleted?.Invoke();
     }
-    
+
+
+    void PuzzleCompleted()
+    {
+        foreach (var tile in Grid)
+        {
+            StartCoroutine(tile.GetComponent<PuzzlePiece>().FadeImage(true));
+        }
+    }
 }

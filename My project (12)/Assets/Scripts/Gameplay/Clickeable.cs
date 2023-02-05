@@ -21,7 +21,7 @@ public class Clickeable : MonoBehaviour
     [SerializeField] bool flicker;
     [SerializeField] bool changeSrpite;
 
-    bool clicked;
+    bool canBeClicked = true;
 
     private void Start()
     {
@@ -32,14 +32,13 @@ public class Clickeable : MonoBehaviour
 
     private void Update()
     {
-        if (clicked) animationTimeCounter = (animationTimeCounter > 0) ? animationTimeCounter - Time.deltaTime : 0;
+        if (canBeClicked) animationTimeCounter = (animationTimeCounter > 0) ? animationTimeCounter - Time.deltaTime : 0;
     }
 
     public void OnClick()
     {
+        if(!canBeClicked) return;
         onClick?.Invoke();
-        clicked = true;
-
         StartAnimation();
     }
     
@@ -79,7 +78,7 @@ public class Clickeable : MonoBehaviour
         if (!flicker)
         {
             animationTimeCounter = animationTime;
-            clicked = false;
+            canBeClicked = false;
         }
     }
 }

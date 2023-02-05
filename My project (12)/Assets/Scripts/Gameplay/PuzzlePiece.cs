@@ -15,6 +15,8 @@ public class PuzzlePiece : Draggable
     
     public GameObject objectToSwap;
 
+    private SpriteRenderer _renderer;
+
     private void OnEnable()
     {
         DragEndObject += OnDrop;
@@ -24,9 +26,14 @@ public class PuzzlePiece : Draggable
         DragEndObject -= OnDrop;
     }
 
+    private void Start()
+    {
+        _renderer = GetComponent<SpriteRenderer>();
+    }
+
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if(other == null || !isDragged || other.GetComponent<PuzzlePiece>().CorrectPosition.x != CorrectPosition.x) return;
+        if(other == null || !isDragged ||!other.GetComponent<PuzzlePiece>() || other.GetComponent<PuzzlePiece>().CorrectPosition.x != CorrectPosition.x) return;
         objectToSwap = other.gameObject;
     }
 
@@ -46,6 +53,33 @@ public class PuzzlePiece : Draggable
         MatrixController.Instance.TryFreezeRow(this);
         MatrixController.Instance.TryFreezeRow(objectToSwap.GetComponent<PuzzlePiece>());
         objectToSwap = null;
+    }
+    
+    public IEnumerator FadeImage(bool fadeAway)
+    {
+        GetComponent<BoxCollider2D>().enabled = false;
+        // fade from opaque to transparent
+        if (fadeAway)
+        {
+            // loop over 1 second backwards
+            for (float i = 1; i >= 0; i -= Time.deltaTime)
+            {
+                // set color with i as alpha
+                _renderer.color = new Color(1, 1, 1, i);
+                yield return null;
+            }
+        }
+        // fade from transparent to opaque
+        else
+        {
+            // loop over 1 second
+            for (float i = 0; i <= 1; i += Time.deltaTime)
+            {
+                // set color with i as alpha
+                _renderer.color = new Color(1, 1, 1, i);
+                yield return null;
+            }
+        }
     }
     
 }

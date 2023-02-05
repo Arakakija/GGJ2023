@@ -25,16 +25,16 @@ public abstract class Draggable : MonoBehaviour
     {
         if (isDragged && isDraggable)
         {
-            gameObject.GetComponent<SpriteRenderer>().sortingOrder = 1;
+            gameObject.GetComponent<SpriteRenderer>().sortingOrder = gameObject.GetComponent<SpriteRenderer>().sortingOrder + 1;
             transform.localPosition = spriteDragStartPosition +
                                       (Camera.main.ScreenToWorldPoint(Input.mousePosition) - mouseDragStartPosition);
         }
     }
 
     private void OnMouseUp()
-    {
+    { 
         isDragged = false;
-        gameObject.GetComponent<SpriteRenderer>().sortingOrder = 0;
+        gameObject.GetComponent<SpriteRenderer>().sortingOrder = gameObject.GetComponent<SpriteRenderer>().sortingOrder -1;
         DragEndObject?.Invoke(this);
     }
 
