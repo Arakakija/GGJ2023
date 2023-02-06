@@ -65,7 +65,7 @@ public class Clickeable : MonoBehaviour
 
         int rand = UnityEngine.Random.Range(0, soundsNames.Length - 1);
 
-        SoundControler.Instance.PlaySound(soundsNames[rand], _as);
+        SoundControler.Instance.PlaySound(soundsNames[rand]);
     }
 
         void StartAnimation()

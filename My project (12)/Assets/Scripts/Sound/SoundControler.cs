@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.ExceptionServices;
 using UnityEngine;
 
 public class SoundControler : Singleton<SoundControler>
@@ -8,11 +9,31 @@ public class SoundControler : Singleton<SoundControler>
     [SerializeField] SoundSO[] soundEffects;
     AudioSource audioSource;
 
+    List<AudioSource> sfxSources= new List<AudioSource>();
+
     [SerializeField] float sfxVolume;
 
     private void Start()
     {
         if (gameObject.GetComponent<AudioSource>()) audioSource = gameObject.GetComponent<AudioSource>();
+    }
+
+    AudioSource AddNewSource()
+    {
+        AudioSource audio = gameObject.AddComponent<AudioSource>();
+        audio.playOnAwake = false;
+        sfxSources.Add(audio);
+        return audio;
+    }
+
+    AudioSource UseSource()
+    {
+        for (int i = 0;i < sfxSources.Count; i++) 
+        {
+            if (sfxSources[i].isPlaying == false)
+                return sfxSources[i];
+        }
+        return AddNewSource();
     }
 
     public void SetVolMusic(double vol)
@@ -56,22 +77,16 @@ public class SoundControler : Singleton<SoundControler>
         audioSource.Stop();
     }
 
-    public void PlaySound(string name, AudioSource _as)
+    public void PlaySound(string name)
     {
-        if (_as == null) return;
-        AudioClip clip = null;
-
+        AudioSource audio = UseSource();
         for (int i = 0; i < soundEffects.Length; i++)
             if (soundEffects[i].name == name)
             {
-                clip = soundEffects[i].audio;
+                audio.clip = soundEffects[i].audio;
+                audio.volume = sfxVolume;
+                audio.Play();
                 return;
             }
-
-        if (clip == null) return;
-
-        _as.clip = clip;
-        _as.volume = sfxVolume;
-        _as.Play();
     }
 }

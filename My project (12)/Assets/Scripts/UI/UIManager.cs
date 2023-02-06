@@ -19,8 +19,11 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] private GameObject panelButton;
     [SerializeField] private GameObject panelPage;
     [SerializeField] private GameObject panelPartitures;
+    [SerializeField] private GameObject closePanel;
 
     [SerializeField] private NoteWords[] _noteWords;
+
+    [SerializeField] string[] soundsNames;
 
     public Image prevPage;
     public Image nextPage;
@@ -51,6 +54,8 @@ public class UIManager : Singleton<UIManager>
         diaryPages[currentPage + 1].gameObject.SetActive(true);
         currentPage++;
 
+        PlayRandSound();
+
         if (currentPage >= 4)
         {
             RefreshNoteWords();
@@ -62,6 +67,7 @@ public class UIManager : Singleton<UIManager>
     public void OpenDiaryUI()
     {
         panelPage.SetActive(true);
+        closePanel.SetActive(true);
         diaryPages[0].gameObject.SetActive(true);
         openDiaryButton.gameObject.SetActive(true);
         panelButton.SetActive(false);
@@ -71,6 +77,7 @@ public class UIManager : Singleton<UIManager>
     public void GoFirstPage()
     {
         NextPage();
+        PlayRandSound();
         panelButton.SetActive(true);
         nextPage.enabled = true;
         prevPage.enabled = false;
@@ -83,7 +90,11 @@ public class UIManager : Singleton<UIManager>
         {
             page.gameObject.SetActive(false);
         }
+
+        PlayRandSound();
+
         panelButton.SetActive(false);
+        closePanel.SetActive(false);
         openDiaryButton.gameObject.SetActive(false);
         submitButton.gameObject.SetActive(false);
         currentPage = 0;
@@ -99,6 +110,8 @@ public class UIManager : Singleton<UIManager>
         diaryPages[currentPage - 1].gameObject.SetActive(true);
         currentPage--;
         
+        PlayRandSound();
+
         if (currentPage <= 0)
         {
             prevPage.enabled = false;
@@ -139,5 +152,15 @@ public class UIManager : Singleton<UIManager>
         CloseDiaryUI();
         ResetNoteWords();
         HidePartituresUI();
+    }
+
+    void PlayRandSound()
+    {
+        if (soundsNames == null) return;
+        if (soundsNames.Length <= 0) return;
+
+        int rand = UnityEngine.Random.Range(0, soundsNames.Length - 1);
+
+        SoundControler.Instance.PlaySound(soundsNames[rand]);
     }
 }

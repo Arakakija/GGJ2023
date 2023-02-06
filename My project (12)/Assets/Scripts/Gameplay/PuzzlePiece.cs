@@ -49,6 +49,7 @@ public class PuzzlePiece : Draggable
             transform.position = MatrixController.Instance.SetPosition(CurrentPostion);
             return;
         }
+        SoundControler.Instance.PlaySound("Partitura02");
         MatrixController.Instance.SwapTiles(CurrentPostion,objectToSwap.GetComponent<PuzzlePiece>().CurrentPostion);
         MatrixController.Instance.TryFreezeRow(this);
         MatrixController.Instance.TryFreezeRow(objectToSwap.GetComponent<PuzzlePiece>());

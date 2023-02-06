@@ -16,6 +16,7 @@ public class PageWordSelector : MonoBehaviour
     public void SaveWord()
     {
         PlayerPrefs.SetString(typePage.ToString(),word);
+        SoundControler.Instance.PlaySound("Partitura03");
     }
 }
 

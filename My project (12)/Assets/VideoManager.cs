@@ -15,6 +15,7 @@ public class VideoManager : Singleton<VideoManager>
 
     private void Start()
     {
+        SoundControler.Instance.PlayPauseMusic(false);
         StartCoroutine(FadeImage(true));
     }
 
@@ -30,6 +31,7 @@ public class VideoManager : Singleton<VideoManager>
                 // set color with i as alpha
                 image.color =  new Color(1, 1, 1, i);
                 source.volume = i;
+                GameManager.Instance.StartTheme();
                 yield return null;
             }
         }

@@ -38,13 +38,13 @@ public class MenuManager : MonoBehaviour
 
     public void OnPlay()
     {
-        SoundControler.Instance.PlaySound(onClickSoundName, _as);
+        SoundControler.Instance.PlaySound(onClickSoundName);
         StartCoroutine(LoadAsynchronously(1));
     }
 
     public void OnCredits()
     {
-        SoundControler.Instance.PlaySound(onClickSoundName, _as);
+        SoundControler.Instance.PlaySound(onClickSoundName);
         menuPanel.SetActive(false);
         creditsPanel.SetActive(true);
 
@@ -52,7 +52,7 @@ public class MenuManager : MonoBehaviour
 
     public void OnExit()
     {
-        SoundControler.Instance.PlaySound(onClickSoundName, _as);
+        SoundControler.Instance.PlaySound(onClickSoundName);
         Application.Quit();
     }
 
