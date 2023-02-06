@@ -1252,18 +1252,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   soundTracks:
-  - {fileID: 11400000, guid: 106819ef30bcad34383f3349028ef427, type: 2}
+  - {fileID: 11400000, guid: aba382cfa45987448b6b66243c0d6271, type: 2}
+  - {fileID: 11400000, guid: 8de0f1be80aa99e41bb60abc3766c8e0, type: 2}
   soundEffects:
-  - {fileID: 11400000, guid: e4be43aae99a1254ebb7d6cf6eb8336a, type: 2}
-  - {fileID: 11400000, guid: 4bd5379c0a995824ca46001576b4236c, type: 2}
-  - {fileID: 11400000, guid: 1902470cf037c75468dbce5f932ed86d, type: 2}
-  - {fileID: 11400000, guid: 09cb051dacc5c4f449c356c6ec00696c, type: 2}
-  - {fileID: 11400000, guid: 26ae3bc31000ed64182d145521715e7d, type: 2}
-  - {fileID: 11400000, guid: 844dcd733f3bbdf48bcb5153917fd079, type: 2}
-  - {fileID: 11400000, guid: e6c2bdab941652b4ebef1f9fc9fef129, type: 2}
-  - {fileID: 11400000, guid: 7fc0e75d03de2a94998e741f93f4374c, type: 2}
-  - {fileID: 11400000, guid: 6d66fe5219b3b0243beb5b220fd4045e, type: 2}
-  - {fileID: 11400000, guid: 61efb141c757f1e4181e2ffbd86459b1, type: 2}
+  - {fileID: 11400000, guid: 14b86d90c7b7821489190cb5ed716fb9, type: 2}
+  - {fileID: 11400000, guid: 3e89388968b85924d92e0b29b1869622, type: 2}
+  - {fileID: 11400000, guid: 057081641d0251141925173331e6258f, type: 2}
+  - {fileID: 11400000, guid: 2159bf2c9b3358443ba610341c9f14a6, type: 2}
+  - {fileID: 11400000, guid: 97348f5feb4ac6642a5eddfcf8b0f45f, type: 2}
+  - {fileID: 11400000, guid: e95faab0ffa77274483997c71ff2b671, type: 2}
+  - {fileID: 11400000, guid: ea3c6017405fd624d8e409a8d90dc6a4, type: 2}
+  - {fileID: 11400000, guid: 9e6d41fb5a5aaa34e9c4152de95622a1, type: 2}
+  - {fileID: 11400000, guid: 88c0cec26eef55449880ba76f09cede1, type: 2}
+  - {fileID: 11400000, guid: d09b4453cf2e1ea44be7ea821e182da2, type: 2}
+  sfxVolume: 1
 --- !u!4 &1958522927
 Transform:
   m_ObjectHideFlags: 0
@@ -1311,7 +1313,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -1409,7 +1411,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _as: {fileID: 1963619509}
-  creditsVideo: {fileID: 0}
   menuPanel: {fileID: 978917867}
   creditsPanel: {fileID: 843502035}
   menuSoundName: MainTheme
@@ -1527,6 +1528,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f231c4fb786f3946a6b90b886c48677, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_SendPointerHoverToParent: 1
   m_HorizontalAxis: Horizontal
   m_VerticalAxis: Vertical
   m_SubmitButton: Submit

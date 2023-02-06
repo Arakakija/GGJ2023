@@ -8,11 +8,10 @@ public class SoundControler : Singleton<SoundControler>
     [SerializeField] SoundSO[] soundEffects;
     AudioSource audioSource;
 
-    float sfxVolume;
+    [SerializeField] float sfxVolume;
 
     private void Start()
     {
-        sfxVolume = 0;
         if (gameObject.GetComponent<AudioSource>()) audioSource = gameObject.GetComponent<AudioSource>();
     }
 
@@ -36,6 +35,7 @@ public class SoundControler : Singleton<SoundControler>
             if(soundTracks[i].name == name)
             {
                 audioSource.clip = soundTracks[i].audio;
+                audioSource.Play();
                 return;
             }  
     }

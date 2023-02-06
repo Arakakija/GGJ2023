@@ -7,7 +7,6 @@ using UnityEngine.Video;
 public class MenuManager : MonoBehaviour
 {
     [SerializeField] AudioSource _as;
-    [SerializeField] VideoPlayer creditsVideo;
 
     [SerializeField] GameObject menuPanel;
     [SerializeField] GameObject creditsPanel;
@@ -18,7 +17,7 @@ public class MenuManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        SoundControler.Instance.SetMusic(menuSoundName);
     }
 
     // Update is called once per frame

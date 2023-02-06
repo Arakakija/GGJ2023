@@ -11,7 +11,7 @@ public class Clickeable : MonoBehaviour
     SpriteRenderer spriteRenderer;
     private AudioSource _as;
 
-    private string[] soundsNames;
+    [SerializeField] private string[] soundsNames;
 
     [SerializeField] Sprite firstSrpite;
     [SerializeField] Sprite secundSrpite;
@@ -30,6 +30,12 @@ public class Clickeable : MonoBehaviour
     private void Start()
     {
         spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
+        if (gameObject.GetComponent<AudioSource>()) _as = gameObject.GetComponent<AudioSource>();
+        else 
+        {
+            gameObject.AddComponent<AudioSource>();
+            _as = gameObject.GetComponent<AudioSource>();
+        }
         firstSrpite = spriteRenderer.sprite;
         animationTimeCounter = animationTime;
     }
@@ -47,8 +53,9 @@ public class Clickeable : MonoBehaviour
     public void OnClick()
     {
         if(!canBeClicked) return;
-        onClick?.Invoke();
+        clicked= true;
         StartAnimation();
+        PlayRandSound();
     }
 
     void PlayRandSound()
