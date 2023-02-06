@@ -1141,7 +1141,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!82 &1958522925
 AudioSource:
@@ -1265,6 +1265,18 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 9e6d41fb5a5aaa34e9c4152de95622a1, type: 2}
   - {fileID: 11400000, guid: 88c0cec26eef55449880ba76f09cede1, type: 2}
   - {fileID: 11400000, guid: d09b4453cf2e1ea44be7ea821e182da2, type: 2}
+  - {fileID: 11400000, guid: 70d59cd63c00eed40af21b2cb841c22b, type: 2}
+  - {fileID: 11400000, guid: 4e55b4474c38ba24eac4b3de03ca6ccf, type: 2}
+  - {fileID: 11400000, guid: 46a5a02d33783b445a66c50d65a7f8aa, type: 2}
+  - {fileID: 11400000, guid: 6f5608db26ee1874aba59c1617b58272, type: 2}
+  - {fileID: 11400000, guid: 497fe109026fb9c47b77afe9fcca5e07, type: 2}
+  - {fileID: 11400000, guid: b9fe24e44174834418f0349cfb0c9790, type: 2}
+  - {fileID: 11400000, guid: 9e1597e6fd89d9140befbbd3aa8b4322, type: 2}
+  - {fileID: 11400000, guid: f23c029d12a0c634c8f13eaeba7ec194, type: 2}
+  - {fileID: 11400000, guid: 18a28b339608aee4fb9b972edf431405, type: 2}
+  - {fileID: 11400000, guid: 6f077ab97254a3d49a5a1c2d63c00c60, type: 2}
+  - {fileID: 11400000, guid: 871c8b58b503e78488dc6d7f3ee1dd71, type: 2}
+  - {fileID: 11400000, guid: 9859be5af1e4eed4eb5983da01c57cc4, type: 2}
   sfxVolume: 1
 --- !u!4 &1958522927
 Transform:
