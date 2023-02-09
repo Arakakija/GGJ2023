@@ -9,8 +9,27 @@ public class GameManager : Singleton<GameManager>
     const string moonWord = "disappeared";
     const string ligthWord = "refuse";
 
+    float timer;
+
+    [SerializeField] GameObject winPanel;
+
+    bool win = false;
+
     [SerializeField] string musicName;
 
+    private void Start()
+    {
+        timer = 30f;
+    }
+
+    private void Update()
+    {
+        if (win) timer -= Time.deltaTime;
+        if (win && Input.GetKeyDown(KeyCode.Escape) || timer <= 0)
+        {
+            Application.Quit();
+        }
+    }
     public void StartTheme()
     {
         SoundControler.Instance.SetMusic(musicName);
@@ -23,6 +42,8 @@ public class GameManager : Singleton<GameManager>
             PlayerPrefs.GetString(TypePage.Moon.ToString()) == moonWord &&
             PlayerPrefs.GetString(TypePage.Light.ToString()) == ligthWord)
         {
+            win = true;
+            winPanel.SetActive(true);
             Debug.Log("WIN");
         }
         else
